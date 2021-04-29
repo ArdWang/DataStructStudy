@@ -83,6 +83,9 @@
 		<Unit filename="/Users/Project/278161009/Github/C/DataStructStudy/main.cpp">
 			<Option target="DataStructStudy"/>
 		</Unit>
+		<Unit filename="/Users/Project/278161009/Github/C/DataStructStudy/test.c">
+			<Option target="DataStructStudy"/>
+		</Unit>
 		<Unit filename="/Users/Project/278161009/Github/C/DataStructStudy/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
