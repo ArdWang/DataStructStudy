@@ -6,3 +6,13 @@
 
 #IncludeRegexTransform: 
 
+/Users/Project/278161009/Github/C/DataStructStudy/main.cpp
+cstdlib
+/Users/Project/278161009/Github/C/DataStructStudy/cstdlib
+stdio.h
+/Users/Project/278161009/Github/C/DataStructStudy/stdio.h
+iostream
+-
+cmath
+/Users/Project/278161009/Github/C/DataStructStudy/cmath
+
