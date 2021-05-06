@@ -2,7 +2,7 @@
 #include <string>
 #include <iomanip>
 #include <stdlib.h>
-
+#include "math.h"
 
 //#include<malloc.h>
 //#define maxSize 1000
@@ -12,14 +12,559 @@
 //#define INFINITY 65535  //无边时的权值
 //#define MAX_VERTEX_NUM 10   //最大定点数
 
-#define MAXVEX 9
-#define INFINITY 65535
-
+//#define MAXVEX 9
+//#define INFINITY 65535
 
 using namespace std;
 
+// 快速排序
+void quick_sort(int a[], int low, int high){
+    int i,j,temp;
+    i=low;
+    j=high;
+    if(low<high){
+        temp = a[low]; //设置轴
+        while (i!=j){
+            while (j>i&&a[j]>=temp){
+                --j;
+            }
+            if(i<j){
+                a[i]=a[j];
+                ++i;
+            }
+            while (i<j&&a[i]<temp){
+                ++i;
+            }
+            if(i<j){
+                a[j]=a[i];
+                --j;
+            }
+        }
+        a[i]=temp;
+        quick_sort(a, low,i-1);
+        quick_sort(a,i+1, high);
+    }
+}
+
+int main(){
+    int a[8] = {70,50,30,20,10,70,40,60};
+    int n=8;
+    quick_sort(a,0,n-1);
+    for(int i=0; i<n; i++){
+        cout<<a[i]<<' ';
+    }
+    return 0;
+}
 
 
+/*
+
+//归并排序法
+
+void merge(int arr[], int l, int mid, int r){
+    //开辟一个新的数组，将原数组映射进去
+    int aux[r-l+1];
+    for(int m=l; m<=r; m++){
+        aux[m-l] = arr[m];
+    }
+    //i和j分别指向两个子数组开头部分
+    int i=l,j=mid+1;
+
+    for(int k=l; k<=r; k++){
+        if(i>mid){
+            arr[k] = aux[j-l];
+            j++;
+        }else if(j>r){
+            arr[k] = aux[i-l];
+            i++;
+        }else if(aux[i-l]<aux[j-l]){
+            arr[k]=aux[i-l];
+            i++;
+        }else{
+            arr[k]=aux[j-l];
+            j++;
+        }
+    }
+}
+
+void merge_sort(int arr[], int n){
+    for(int sz=1; sz<=n; sz+=sz){
+        for(int i=0;i+sz<n;i+=sz+sz){
+           //i+sz防止越界
+           //对局部：arr[i...sz-1]和arr[i+sz.....i+2*sz-1]进行排序
+           //min函数防止越界
+           merge(arr, i, i+sz-1, min(i+sz+sz-1,n-1));
+        }
+    }
+}
+
+int main(){
+    int a[8]={70,50,30,20,10,70,40,60};
+    int n=8;
+    merge_sort(a, n);
+    for(int i=0; i<n; i++){
+        cout<<a[i]<<" ";
+    }
+    return 0;
+}
+*/
+
+
+
+/*
+
+//堆排序
+
+// Function:交换交换根节点和数组末尾元素的值
+void Swap(int *heap, int len){
+    int temp;
+    temp = heap[0];
+    heap[0] = heap[len-1];
+    heap[len-1] = temp;
+}
+
+// Function:构建大顶堆
+void BuildMaxHeap(int *heap, int len) {
+    int i, temp;
+    for (i = len / 2 - 1; i >= 0; i--) {
+        //根节点大于左子树
+        if ((2 * i + 1) < len && heap[i] < heap[2 * i + 1]) {
+            temp = heap[i];
+            heap[i] = heap[2 * i + 1];
+            heap[2 * i + 1] = temp;
+
+            //检查交换后的左子树是否满足大顶堆项性质，如果不满足，则重新调整子树结构
+            if ((2 * (2 * i + 1) + 1 < len && heap[2 * i + 1] < heap[2 * (2 * i + 1) + 1]) ||
+                (2 * (2 * i + 1) + 2 < len && heap[2 * i + 1] < heap[2 * (2 * i + 1) + 2])) {
+                BuildMaxHeap(heap, len);
+            }
+        }
+
+        if ((2 * i + 2) < len && heap[i] < heap[2 * i + 2]) {
+            //根节点大于右子树
+            temp = heap[i];
+            heap[i] = heap[2 * i + 2];
+            heap[2 * i + 2] = temp;
+            //检查交换后的右子树是否满足大顶堆性质，如果不满足，则重新调整子树结构
+            if ((2 * (2 * i + 2) + 1 < len && heap[2 * i + 2] < heap[2 * (2 * i + 2) + 1]) ||
+                (2 * (2 * i + 2) + 2 < len && heap[2 * i + 2] < heap[2 * (2 * i + 2) + 2])) {
+                BuildMaxHeap(heap, len);
+            }
+        }
+    }
+}
+
+
+int main(){
+
+    int a[8] = {70,50,30,20,10,70,40,60};
+
+    int n=8;
+
+    int i;
+
+    for(i=n;i>0;i--){
+        BuildMaxHeap(a, i);
+        Swap(a,i);
+    }
+
+    for(i=0; i<n; i++){
+        printf("%d ", a[i]);
+    }
+
+    return 0;
+}
+*/
+
+
+/*
+//希尔排序
+void shellSort(int arr[], int n){
+    int i,j,gap;
+    for(gap=n/2;gap>0;gap/=2){
+        for(i=0;i<gap;i++){
+            for(j=i+gap;j<n;j+=gap){
+                for(int k=j;k>i&&arr[k]<arr[k-gap];k-=gap){
+                    swap(arr[k-gap],arr[k]);
+                }
+            }
+        }
+    }
+}
+
+
+int main(){
+    int a[8] = {70,50,30,20,10,70,40,60};
+    int n=8;
+    shellSort(a,n);
+    for(int i=0; i<n; i++){
+        cout<<a[i]<<' ';
+    }
+    return 0;
+}
+*/
+
+/*
+// 直接插入排序
+
+void insert_sort(int a[], int n){
+    int i,j;
+    for(i=1; i<n; i++){
+        //循环从第2个元素开始
+        if(a[i]<a[i-1]){
+            int temp=a[i];
+            for(j=i-1;j>=0&&a[j]>temp;j--){
+                a[j+1]=a[j];
+            }
+            a[j+1]=temp; //此处就是a[j+1]=temp;
+        }
+    }
+}
+
+
+int main(){
+    int a[8] = {70,50,30,20,10,70,40,60};
+    int n=7;
+    insert_sort(a,n);
+    for(int i=0; i<=n; i++){
+        cout<<a[i]<<' ';
+    }
+    return 0;
+}
+*/
+
+
+/*
+// 选择排序
+void select_sort(int a[], int n){
+    int temp;
+    // 利用一个中间变量temp来记录需要交换元素的位置
+    for(int i=0; i<n-1; i++){
+        temp = i;
+        for(int j=i+1;j<n;j++){
+            if(a[temp]>a[j]){
+                //选出待排数据中的最小值
+                temp = j;
+            }
+        }
+        swap(a[i],a[temp]);
+    }
+}
+
+int main(){
+    int a[8] = {2,10,9,4,8,1,6,5};
+    int n=8;
+    select_sort(a, n);
+    for(int i=0; i<n; i++){
+        cout<<a[i]<<' ';
+    }
+    return 0;
+}
+
+*/
+
+
+/*
+// 排序的方法 冒泡排序法
+
+template<class T>  //模版类，可以让参数为任意类型
+
+static void swap(T &a, T &b){
+    T c(a);
+    a=b;
+    b=c;
+}
+
+
+ //指定类型
+
+ void swap(int &a, int &b){
+    int temp = a;
+    a = b;
+    b = temp;
+ }
+
+
+void bubble_sort(int a[], int n){
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n-i; j++){
+            if(a[j]>a[j+1]){
+                // 交换数据
+                swap(a[j], a[j+1]);
+            }
+        }
+    }
+}
+
+
+int main(){
+    int a[8] = {70,50,30,20,10,70,40,60};
+    int n=7;
+    bubble_sort(a,n);
+    for(int i=0; i<=n; i++){
+        cout<<a[i]<<' ';
+    }
+    return 0;
+}
+
+*/
+
+/*
+
+// 平衡二叉法排序
+
+//结点设计
+typedef struct Node{
+    int key;
+    struct Node *left;
+    struct Node *right;
+    int height;
+}BTNode;
+
+
+int height(struct Node *N){
+    if(N == NULL){
+        return 0;
+    }
+    return N->height;
+}
+
+int max(int a, int b){
+    return (a>b)?a:b;
+}
+
+BTNode* newNode(int key){
+    struct Node* node = (BTNode*)malloc(sizeof(struct Node));
+    node->key = key;
+    node->left = NULL;
+    node->right = NULL;
+    node->height = 1;
+    return (node);
+}
+
+
+//ll型调整
+BTNode* ll_rotate(BTNode* y){
+    BTNode *x = y->left;
+    y->left = x->right;
+    x->right = y;
+
+    y->height = max(height(y->left), height(y->right))+1;
+    x->height = max(height(x->left), height(x->right))+1;
+    return x;
+}
+
+//rr型调整
+BTNode* rr_rotate(BTNode* y){
+    BTNode *x = y->right;
+    y->right = x->left;
+    x->left = y;
+
+    y->height = max(height(y->left), height(y->right))+1;
+    x->height = max(height(x->left), height(x->right))+1;
+    return x;
+}
+
+//判断平衡
+int getBalance(BTNode* N){
+    if(N == NULL){
+        return 0;
+    }
+    return height(N->left) - height(N->right);
+}
+
+//插入结点&数据
+BTNode* insert(BTNode* node, int key){
+    if(node == NULL){
+        return newNode(key);
+    }
+    if(key < node->key){
+        node->left = insert(node->left, key);
+    }else if(key < node->key){
+        node->right = insert(node->right, key);
+    }else{
+        return node;
+    }
+
+    node->height = 1+max(height(node->left), height(node->right));
+
+    int balance = getBalance(node);
+
+    if(balance>1 && key<node->left->key){ //LL型
+        return ll_rotate(node);
+    }
+
+    if(balance<-1 && key>node->right->key){ //RR型
+        return rr_rotate(node);
+    }
+
+    if(balance>1 && key>node->left->key){ // LR型
+        node->left = rr_rotate(node->left);
+        return ll_rotate(node);
+    }
+
+    if(balance<-1 && key<node->right->key){ //RL型
+        node->right = ll_rotate(node->right);
+        return rr_rotate(node);
+    }
+    return node;
+}
+
+//遍历
+void preOrder(struct Node *root){
+    if(root != NULL){
+        printf("%d", root->key);
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+
+int main(){
+    BTNode *root = NULL;
+    root = insert(root,2);
+    root = insert(root,1);
+    root = insert(root,0);
+    root = insert(root,3);
+    root = insert(root,4);
+    root = insert(root,4);
+    root = insert(root,5);
+    root = insert(root,6);
+    root = insert(root,9);
+    root = insert(root,8);
+    root = insert(root,7);
+
+    printf("前序遍历:");
+    preOrder(root);
+    return 0;
+}
+
+*/
+
+
+/*
+
+// 分块查找
+struct index{
+    //定义块的结构
+    int key;
+    int start;
+} newIndex[3]; //定义结构体数组
+
+int search(int key, int a[]);
+
+int cmp(const void *a, const void *b){
+    return (*(struct index*)a).key>(*(struct index*)b).key?1:-1;
+}
+
+int main(){
+    int i, j=-1,k,key;
+    int a[] = {33,42,44,38,24,48,22,12,13,8,9,20,60,58,74,49,86,53};
+    //确实模块的起始值和最大值
+    for(i=0;i<3;i++){
+        //确定每个块范围的起始值
+        newIndex[i].start = j+1;
+        j+=6;
+        for(int k=newIndex[i].start; k<=j; k++){
+            if(newIndex[i].key<a[k]){
+                newIndex[i].key = a[k];
+            }
+        }
+    }
+
+    //对结构体按照 key 值进行排序
+    qsort(newIndex,3, sizeof(newIndex[0]),cmp);
+    //输入要查询的数，并调用函数进行查找
+    printf("请输入你想要查找的数:\n");
+    scanf("%d", &key);
+    k = search(key, a);
+
+    //输出查找的结果
+    if(k>0){
+        printf("查找成功!你要找的数在数组中的位置是：%d\n",k+1);
+    }else{
+        printf("查找失败！你要找的数不在数组中.\n");
+    }
+
+    return 0;
+}
+
+int search(int key, int a[]){
+    int i, startValue;
+    i=0;
+    while (i<3 && key>newIndex[i].key){
+        //确定在那个块中，遍历每个块，确定key在那个块中
+        i++;
+    }
+
+    if(i>=3){
+        //大于分得的块数，则返回0
+        return -1;
+    }
+    // startValue等于块范围的起始值
+    startValue = newIndex[i].start;
+    while (startValue<=startValue+5 && a[startValue]!=key){
+        startValue++;
+    }
+    if(startValue > startValue+5){
+        //如果大于块范围的结束值，则说明没有查找的数
+        return -1;
+    }
+
+    return startValue;
+
+}
+*/
+
+
+/*
+//二分查找算法，找不到就返回-1，找到了就返回值
+int binary_search(int* list, int len, int target){
+    int low = 0;
+    int hight = len-1;
+    int middle;
+
+    while (low<=hight){
+        middle = (low+hight)/2;
+        if(list[middle] = target){
+            printf("已经找到该值，数组下标为:%d\n",middle);
+            return list[middle];
+        }else if(list[middle]>target){
+            hight = middle - 1;
+        }else if(list[middle]<target){
+            low = middle + 1;
+        }
+    }
+    printf("末找到该值");
+    return -1;
+}
+
+// sizeof()关键字 是所指的是占用的空间大小 32位的话就除以4 64位就除以8
+int main(){
+    int a[] = {2,4,5,8,9,44};
+    int b = binary_search(a, sizeof(a)/4,5);
+    printf("b=%d\n",b);
+    printf("Hello World!\n");
+    return 0;
+}
+*/
+
+
+/*
+int main(){
+    int Shangping[6] = {10,10,9,10,10};
+    for(int i=0; i<6; i++){
+        if(Shangping[i]==9){
+            printf("找到次品,它的位置在:%d",i+1);
+        }
+    }
+    return 0;
+}
+*/
+
+
+
+
+/*
 // 最短路径-弗洛伊德算法
 
 struct MGraph{
@@ -135,7 +680,7 @@ int main(){
 
     return 0;
 }
-
+*/
 
 
 /*
