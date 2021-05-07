@@ -17,6 +17,42 @@
 
 using namespace std;
 
+const int maxn=1002;
+int arr[maxn] = {0};
+
+//判断是否是质数
+bool is_pri(int n){
+    for(int i=n-1; i>=2; i--){
+        if(n%i==0) return false;
+    }
+    return true;
+}
+
+void create(){
+    for(int i=3; i<=maxn; i++){
+        if(is_pri(i)){
+            arr[i]=1;
+        }
+    }
+}
+
+int main(){
+    create();
+    int input;
+    while (cin>>input){
+        if(arr[input]){
+            cout<<input<<"是质数"<<endl;
+        }else{
+            cout<<input<<"不是质数"<<endl;
+        }
+    }
+    return 0;
+}
+
+
+
+
+/*
 // 快速排序
 void quick_sort(int a[], int low, int high){
     int i,j,temp;
@@ -55,7 +91,7 @@ int main(){
     }
     return 0;
 }
-
+*/
 
 /*
 
